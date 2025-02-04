@@ -5,7 +5,7 @@ const generateForgotPasswordEmail = async (args) => {
     content: '<p>Let&apos;s get you back in.</p>',
     cta: {
       buttonLabel: 'Reset your password',
-      url: `${process.env.PAYLOAD_PUBLIC_SERVER_URL}/reset-password?token=${args?.token}`,
+      url: `${process.env.PUBLIC_SERVER_URL}/reset-password?token=${args?.token}`,
     },
     headline: 'Locked out?',
   })
