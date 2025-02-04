@@ -1,0 +1,504 @@
+@startuml
+
+' ============= Admin Setup ===============
+class "User" {
+  * id : uuid*
+  * email: string*
+  * password: string*
+  * role: enum[admin, org, applicant]*
+  * pictureURL : string
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+enum "Role" {
+   admin
+   org
+   applicant
+}
+
+class "IndustryType" {
+  * id: uuid*
+  * title: string*
+  * description: string
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+class "JobRole" {
+  * id: uuid*
+  * industryTypeId: uuid[]
+  * title : string*
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  e.g: frontend, backend
+}
+
+class "Designation" {
+  * id: uuid*
+  * industryTypeId: uuid
+  * title: string*
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  e.g: SE, SSE
+}
+
+class "Skills" {
+  * id: uuid*
+  * industryTypeId: uuid
+  * title: string*
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  e.g: Next, Node
+}
+
+class "FieldOfStudy" {
+  * id: uuid*
+  * title: string*
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  e.g: CSE, EEE
+}
+
+
+class "DegreeLevel" {
+  * id: uuid*
+  * title: string*
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  e.g: B.Sc, M.Sc.
+}
+
+class "SocialMedia" {
+  * id: uuid*
+  * title: string*
+  * img: image
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  e.g: "google", "facebook", "others"
+}
+
+class "JobType" {
+  * id: uuid*
+  * title: string*
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  e.g: "home", "onsite", "hybrid"
+}
+
+class "EmployeeType" {
+  * id: uuid*
+  * title: string*
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  e.g: "full-time", "part-time", "contractual"
+}
+
+class "AcademicActivityType" {
+  * id: uuid*
+  * title: string*
+  * createdAt : DateTime
+  * updatedAt : DateTime  
+  e.g: "project", "thesis", "intern"
+}
+
+class "HiringSteps" {
+  * id : uuid*
+  * title: string*
+  * description: string
+  * createdAt : DateTime
+  * updatedAt : DateTime
+  e.g: Initial Interview, Technical Interview, HR Interview
+}
+
+class "TermsAndConditions" {
+  * id: uuid*
+  * title: string*
+  * description : string
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+class "PrivacyPolicy" {
+  * id : uuid*
+  * title: string*
+  * description: string
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+class "FAQ" {
+  * id: uuid*  
+  * question: string*
+  * answer: string
+  * createdAt : DateTime
+  * updatedAt : DateTime 
+}
+
+' ============= Relation for admin setup =================
+Role --> User 
+' "User has only one Role"
+JobRole }o-- IndustryType 
+' "Job Role has many Industry Type"
+Designation }o-- IndustryType 
+' "Designation has many Industry Type"
+Skills }o-- IndustryType 
+' "Skill has many Industry Type"
+
+
+' ============ Applicant ==============
+class "ApplicantAcademicActivity" {
+  * id: uuid*
+  * academicActivityTypeId: uuid*
+  * title: string*
+  * description: string
+  * duration: number
+  * beginning: dd/mm/yyyy
+  * ending: dd/mm/yyyy
+  * certificateUpload: pdf
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+class "ApplicantSocialLinks" {
+  * id: uuid*
+  * socialMediaId: uuid*
+  * socialMediaUrl: string*
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+class "ApplicantTrainingAndCertifications" {
+  * id: uuid*
+  * title: string*
+  * yearOfExperience: number
+  * beginning: dd/mm/yyyy
+  * ending: dd/mm/yyyy
+  * certificateUpload: pdf
+  * createdAt : DateTime
+  * updatedAt : DateTime
+} 
+
+class "ApplicantEducations" {
+  * id: uuid* 
+  * degreeLevelId: uuid*
+  * fieldOfStudyId: uuid*
+  * instituteName: string
+  * duration: number
+  * beginning: dd/mm/yyyy
+  * ending: dd/mm/yyyy
+  * eduCertificateUpload: pdf
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+class "ApplicantExperiences" {
+  * id: uuid*
+  * jobRoleId: uuid[]
+  * designationId: uuid
+  * companyName: string*
+  * yearOfExperience: number
+  * beginning: dd/mm/yyyy
+  * ending: dd/mm/yyyy
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+class "ApplicantExtracurricularActivity" {
+  * id: uuid*
+  * title: string*
+  * description: string
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+class "Applicant" {
+  * id : uuid *
+  * userId: uuid *
+  * jobRoleId : uuid
+  * designationId : uuid
+  * skillsId : uuid[]
+  * industryTypeId : uuid
+  * trainingAndCertifications : uuid[]
+  * experiences: uuid[]
+  * educations: uuid[]
+  * academicActivity: uuid[]
+  * socialLinks : uuid[]
+  * extraCurricularActivity: uuid[]
+  * name: String
+  * objective: String
+  * firstName : string
+  * lastName : string
+  * address : string
+  * phone: string
+  * contactInfo: string
+  * applicantBloodGroup: enum["O+","B+"]
+  * img: image
+  * applicantCV: pdf
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+class "JobApplication" {
+  * id : uuid*
+  * applicantId : uuid*
+  * jobDetailsId : uuid*
+  * applicantStatusId : uuid*
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+' relation applicant
+ApplicantAcademicActivity <-- AcademicActivityType 
+' "Applicant Academic Activity has one Academic Activity Type"
+ApplicantSocialLinks <-- SocialMedia 
+' "Applicant Social Link has one Social Media"
+ApplicantEducations <-- DegreeLevel 
+' "Applicant Educations has one Degree Level"
+ApplicantEducations <-- FieldOfStudy 
+' "Applicant Educations has one Field Of Study"
+ApplicantExperiences <-- JobRole 
+' "Applicant Experiences has many Job Roles"
+ApplicantExperiences <-- Designation 
+' "Applicant Experiences has one Designation"
+Applicant <-- User 
+' "Applicant has one User"
+Applicant }o-- JobRole 
+' "Applicant has many Job Roles"
+Applicant <-- Designation 
+' "Applicant has one Designation"
+Applicant }o-- Skills 
+' "Applicant has many Skills"
+Applicant }o-- IndustryType 
+' "Applicant has many Industry Type"
+Applicant }o-- ApplicantTrainingAndCertifications 
+' "Applicant has many Training And Certifications"
+Applicant }o-- ApplicantExperiences 
+' "Applicant has many Experiences."
+Applicant }o-- ApplicantEducations 
+' "Applicant has many Educations"
+Applicant }o-- ApplicantAcademicActivity 
+' "Applicant has many Academic Activities"
+Applicant }o-- ApplicantSocialLinks 
+' "Applicant has many Social Media Links"
+Applicant }o-- ApplicantExtracurricularActivity 
+' "Applicant has many Extracurricular Activities"
+JobApplication <-- JobDetails 
+' "Job application has one Job Details"
+JobApplication <-- Applicant 
+' "Job Application has one Applicant"
+
+' Organization
+class "OrganizationSocialLinks" {
+  * id: uuid*
+  * socialMediaId: uuid*
+  * socialMediaUrl: string*
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+class "Organization" {
+  * id: uuid*
+  * userId: uuid*
+  * termsAndConditionsId: uuid
+  * industryTypeId: uuid
+  * socialLinks: uuid[]
+  * orgName: string*
+  * orgTagline: string
+  * orgMission: string
+  * orgVision: string
+  * orgWebsiteURL: string
+  * orgAddress: string
+  * orgEmail: string
+  * orgPhone: string
+  * orgEstablishedYear: number
+  * aboutUs: string
+  * img: jpg
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+class "OrgSettings" {
+  * id: uuid*
+  * organizationId: uuid*
+  * subscriptionId: uuid*
+  * beginning: DateTime
+  * ending: DateTime
+  * numberOfJobPosted: number
+  * numberOfCvViewed: number
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+' ============= relation organization ==============
+OrganizationSocialLinks <-- SocialMedia 
+' "Organization Social Link has one Social Media"
+Organization <-- User 
+' "Organization has one User"
+Organization <-- TermsAndConditions 
+' "Organization has one Terms And Conditions"
+Organization <-- IndustryType 
+' "Organization has one Industry Type"
+Organization }o-- OrganizationSocialLinks 
+' "Organization has many social Links"
+OrgSettings <-- Organization 
+' "Organization Settings has one Organization"
+OrgSettings <-- Subscription
+' "Organization Settings has one Subscription"
+
+' ========= relations with job =============
+class "Job" {
+  * id: uuid*
+  * organizationId: uuid*
+  * socialLinks: uuid[]
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+class "JobDetails" {
+  * id: uuid*
+  * jobId: uuid*
+  * employeeTypeId: uuid
+  * designationID: uuid
+  * jobTypeId: uuid
+  * skillsId: uuid[]
+  * degreeLevelId: uuid[]
+  * fieldOfStudyId: uuid[]
+  * hiringStagesId: uuid[]
+  * title: string*
+  * description: string
+  * yearOfExperience: number
+  * location: string
+  * requirements: string
+  * employeeBenefits: string
+  * salary: string
+  * publishDate: DateTime
+  * *deadline: DateTime
+  * jobStatus: boolean
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+class "JobSocialLinks" {
+  * id: uuid*
+  * socialMediaId: uuid*
+  * socialMediaUrl: string
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+class "ApplicantStatus" {
+  * id: uuid*
+  * jobApplicationId: uuid*
+  * hiringStagesId: uuid*
+  * status: enum["Pending", "In Progress", "Passed", "Failed"]*
+  * timeStamp: dd/mm/yyyy
+  * comment: string
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+class "HiringStages" {
+  * id: uuid*
+  * organizationId: uuid*
+  * title: string*(Suggestions from hiring_steps)
+  * order: number*
+  * description: string
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+' =========== Relation Job ===============
+Job <-- Organization 
+' "Job has one Organization"
+Job }o-- JobSocialLinks 
+' "Job has many Social Links"
+JobSocialLinks <-- SocialMedia 
+' "Job Social Link has one Social Media"
+ApplicantStatus <--> JobApplication 
+' "Applicant Status History has one Job Application and vice versa"
+ApplicantStatus <-- HiringStages
+' "Applicant Status History has one Hiring Stage"
+JobDetails <-- Job 
+' "Job Details has one Job"
+JobDetails <-- EmployeeType 
+' "Job details has one Employee Type"
+JobDetails <-- JobRole 
+' "Job Details has one Job Role"
+JobDetails <-- Designation 
+' "Job details has one designation"
+JobDetails <-- JobType 
+' "Job details has one Job Type"
+JobDetails }o-- Skills 
+' "Job Details has many Skills"
+JobDetails }o-- DegreeLevel
+' "Job Details has many Degree Levels"
+JobDetails }o-- FieldOfStudy
+' "Job details has many Field Of Study"
+JobDetails }o-- HiringStages
+' "Job Details has many Hiring Stages"
+
+' ================ Subscription =============
+class "Subscription" {
+  * id: uuid*
+  * orgSettingsId: uuid
+  * plans: array
+  * createdAt : DateTime
+  * updatedAt : DateTime 
+}
+
+class "SubscriptionPlans" {
+  * id: uuid*
+  * features: uuid[]
+  * title: string
+  * description: string
+  * duration: number
+  * price: number
+  * createdAt : DateTime
+  * updatedAt : DateTime 
+}
+
+class "SubscriptionPlanFeatures" {
+  * id: uuid*
+  * title: string*
+  * details: string
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+class "Payment" {
+  * id: uuid*
+  * subscriptionId: uuid[]*
+  * paymentStatus: boolean
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+class "DiscountPolicies" {
+  * id: uuid*
+  * title: string*
+  * details: string
+  * amount: number
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+class "RefundPolicies"{
+  * id: uuid*
+  * title: string*
+  * details: string
+  * refundPhoto: jpg
+  * createdAt : DateTime
+  * updatedAt : DateTime
+}
+
+' =========== Relation Subscription ===============
+Subscription <-- SubscriptionPlans 
+' "Subscription has one Subscription Plan"
+SubscriptionPlans <-- SubscriptionPlanFeatures 
+' "Subscription Plan has many Subscription Plan Features"
+Payment }o-- Subscription 
+' "Payment has many Subscriptions"
+
+
+@enduml
