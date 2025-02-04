@@ -56,6 +56,9 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
+  routes: {
+    admin: '/hh-admin',
+  },
   email: email,
   collections: [
     // users
@@ -100,7 +103,6 @@ export default buildConfig({
     disable: true,
   },
   // disable: Boolean(Number(process.env.ADMIN_PANEL_DISABLED)),
-  disable: true,
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
