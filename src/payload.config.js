@@ -99,7 +99,8 @@ export default buildConfig({
     // Disable GraphQL here
     disable: true,
   },
-  disable: Boolean(Number(process.env.ADMIN_PANEL_DISABLED)),
+  // disable: Boolean(Number(process.env.ADMIN_PANEL_DISABLED)),
+  disable: true,
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
