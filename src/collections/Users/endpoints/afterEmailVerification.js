@@ -51,6 +51,14 @@ export default async function AfterEmailVerification(req) {
     // profile create
     const createProfileIfNotExists = async (collectionName, userField) => {
       try {
+        // verification token
+        await req.payload.updateById({
+          collection: 'users',
+          id: userId.id,
+          data: {
+            _verificationToken: null,
+          },
+        })
         // Check if the profile already exists
         const existingProfile = await req.payload.find({
           collection: collectionName,

@@ -7,7 +7,21 @@ export const ApplicantStatus = {
   },
   access: {
     read: () => true,
-    create: () => true,
+    create: ({ req: { user } }) => {
+      if (user) {
+        if (user?.role === 'admin' || user?.role === 'super-admin') {
+          return true
+        }
+        if (user?.role === 'org') {
+          return {
+            'jobApplication.jobDetails.job.organization': {
+              equals: user.id,
+            },
+          }
+        }
+      }
+      return false
+    },
     update: ({ req: { user } }) => {
       if (user) {
         if (user?.role === 'admin' || user?.role === 'super-admin') {
