@@ -69,7 +69,7 @@ export const Job = {
         return data
       },
     ],
-    after: [JobDetailsCreateWithJob],
+    afterChange: [JobDetailsCreateWithJob],
     beforeDelete: [
       async ({ req, id }) => {
         try {
