@@ -299,24 +299,4 @@ export const Applicant = {
       ],
     },
   ],
-  hooks: {
-    beforeChange: [
-      async ({ req, data }) => {
-        // Uncomment and use this logic if needed
-        try {
-          const existingApplicant = await req.payload.find({
-            collection: 'applicants',
-            where: {
-              applicant: req.user.id,
-            },
-          })
-          data.applicant = existingApplicant.docs[0].id
-        } catch (error) {
-          console.error('Error creating applicant:', error)
-          throw new CustomError('Something went wrong while creating applicant', 400)
-        }
-        return data
-      },
-    ],
-  },
 }

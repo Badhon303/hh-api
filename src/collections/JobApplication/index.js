@@ -115,12 +115,6 @@ export const JobApplication = {
       collection: 'applicant-status',
       on: 'jobApplication',
     },
-    // {
-    //   name: 'applicationStatus',
-    //   type: 'relationship',
-    //   relationTo: 'applicant-status',
-    //   // access: { update: () => false },
-    // },
   ],
   hooks: {
     beforeChange: [DuplicateApplication],

@@ -20,15 +20,17 @@ export const DuplicateApplication = async ({
         throw new APIError('Applicant not found.', 400)
       }
 
-      if (applicant.docs[0].id.toString() !== data.applicant.toString()) {
-        throw new APIError('you are not allowed to perform this task.', 400)
-      }
+      data.applicant = applicant.docs[0].id
+
+      // if (applicant.docs[0].id.toString() !== data.applicant.toString()) {
+      //   throw new APIError('you are not allowed to perform this task.', 400)
+      // }
 
       const existingApplication = await req.payload.find({
         collection: 'job-applications',
         where: {
           applicant: {
-            equals: applicant.docs[0].id,
+            equals: data.applicant,
           },
           jobDetails: {
             equals: data.jobDetails,
@@ -39,6 +41,7 @@ export const DuplicateApplication = async ({
       if (existingApplication.docs.length > 0) {
         throw new APIError('You have already applied to this job.', 400)
       }
+      return data
     } catch (error) {
       console.error('Error during application check:', error.message || error)
       throw new APIError(
