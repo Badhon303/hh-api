@@ -1,6 +1,5 @@
 import OrganizationAndAdmin from '../../access/organizationAndAdmin'
 import { JobDetailsCreateWithJob } from './hooks/jobDetailsCreateWithJob'
-import { JobDetailsDeleteWithJob } from './hooks/jobDetailsDeleteWithJob'
 import { UrlPatternValidate } from '../../utils/urlPatternValidate'
 
 export const Job = {
@@ -16,11 +15,19 @@ export const Job = {
   },
   fields: [
     {
+      name: 'title',
+      type: 'text',
+      maxLength: 50,
+    },
+    {
       name: 'organization',
       type: 'relationship',
       relationTo: 'organizations',
-      required: true,
       hasMany: false,
+      access: {
+        create: () => false,
+        update: () => false,
+      },
     },
     {
       name: 'socialLinks', // required
@@ -44,7 +51,41 @@ export const Job = {
     },
   ],
   hooks: {
-    afterChange: [JobDetailsCreateWithJob],
-    afterDelete: [JobDetailsDeleteWithJob],
+    beforeChange: [
+      async ({ req, data }) => {
+        // Uncomment and use this logic if needed
+        try {
+          const existingOrg = await req.payload.find({
+            collection: 'organizations',
+            where: {
+              organization: req.user.id,
+            },
+          })
+          data.organization = existingOrg.docs[0].id
+        } catch (error) {
+          console.error('Error creating job:', error)
+          throw new CustomError('Something went wrong while creating job', 400)
+        }
+        return data
+      },
+    ],
+    after: [JobDetailsCreateWithJob],
+    beforeDelete: [
+      async ({ req, id }) => {
+        try {
+          await req.payload.delete({
+            collection: 'job-details',
+            where: {
+              job: {
+                equals: id,
+              },
+            },
+          })
+          // }
+        } catch (error) {
+          console.error(`Error deleting job details:`, error)
+        }
+      },
+    ],
   },
 }

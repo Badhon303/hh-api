@@ -77,11 +77,6 @@ export const JobDetails = {
       hasMany: true,
     },
     {
-      name: 'title',
-      type: 'text',
-      maxLength: 50,
-    },
-    {
       name: 'description',
       type: 'text',
       maxLength: 5000,
