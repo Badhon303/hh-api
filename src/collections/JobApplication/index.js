@@ -100,7 +100,7 @@ export const JobApplication = {
           }
         }
       },
-      hasMany: false,
+      hasMany: true,
     },
     {
       name: 'jobDetails',
