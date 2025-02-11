@@ -3,6 +3,8 @@
 import jwt from 'jsonwebtoken'
 import getCookieExpiration from '../utils/getCookieExpiration'
 
+import { headersWithCors } from 'payload'
+
 export default async function AfterEmailVerification(req) {
   // const payload = await getPayload({ config })
   const { token } = req.routeParams
@@ -103,20 +105,31 @@ export default async function AfterEmailVerification(req) {
     // Set the JWT token in a cookie
 
     // Step 5: Respond with user data and expiration time
-    return Response.json({
-      exp: unixTimestamp,
-      message: 'Auth Passed',
-      token: generateToken,
-      user: {
-        id: user.id,
-        pictureUrl: user.pictureUrl,
-        role: user.role,
-        updatedAt: user.updatedAt,
-        createdAt: user.createdAt,
-        email: user.email,
-        loginAttempts: user.loginAttempts,
+    return Response.json(
+      {
+        exp: unixTimestamp,
+        message: 'Auth Passed',
+        token: generateToken,
+        user: {
+          id: user.id,
+          pictureUrl: user.pictureUrl,
+          role: user.role,
+          updatedAt: user.updatedAt,
+          createdAt: user.createdAt,
+          email: user.email,
+          loginAttempts: user.loginAttempts,
+        },
       },
-    })
+      {
+        headers: headersWithCors({
+          headers: new Headers({
+            'Set-Cookie': cookie,
+          }),
+          req,
+        }),
+        status: 200,
+      },
+    )
   } catch (error) {
     console.error('Error verifying email:', error)
     return Response.json({ error: 'An error occurred during verification.' }, { status: 500 })
