@@ -20,7 +20,7 @@ export const DuplicateApplication = async ({
         throw new APIError('Applicant not found.', 400)
       }
 
-      data.applicant = applicant.docs[0].id
+      data.applicant = applicant.docs[0].applicant
 
       // if (applicant.docs[0].id.toString() !== data.applicant.toString()) {
       //   throw new APIError('you are not allowed to perform this task.', 400)
