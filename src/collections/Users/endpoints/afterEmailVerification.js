@@ -3,7 +3,7 @@
 import jwt from 'jsonwebtoken'
 import getCookieExpiration from '../utils/getCookieExpiration'
 
-import { headersWithCors } from 'payload'
+import { headersWithCors, generatePayloadCookie } from 'payload'
 
 export default async function AfterEmailVerification(req) {
   // const payload = await getPayload({ config })
@@ -103,6 +103,11 @@ export default async function AfterEmailVerification(req) {
       await createProfileIfNotExists('organizations', 'organization')
     }
     // Set the JWT token in a cookie
+    const cookie = generatePayloadCookie({
+      collectionAuthConfig: collectionConfig.auth,
+      cookiePrefix: req.payload.config.cookiePrefix,
+      token: generateToken,
+    })
 
     // Step 5: Respond with user data and expiration time
     return Response.json(
