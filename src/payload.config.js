@@ -127,13 +127,12 @@ export default buildConfig({
     },
   ],
   cors: [
-    // 'http://localhost:3000', // Your front-end application
-    '*', // Your front-end application
+    'http://localhost:3000', // Your front-end application
   ],
   // If you are protecting resources behind user authentication,
   // This will allow cookies to be sent between the two domains
   csrf: [
-    '*', // Your front-end application
+    'http://localhost:3000', // Your front-end application
   ],
   cookiePrefix: 'rf',
   upload: {
