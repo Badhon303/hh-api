@@ -61,7 +61,7 @@ export const Job = {
               organization: req.user.id,
             },
           })
-          data.organization = existingOrg.docs[0].organization
+          data.organization = existingOrg.docs[0].id
         } catch (error) {
           console.error('Error creating job:', error)
           throw new CustomError('Something went wrong while creating job', 400)
