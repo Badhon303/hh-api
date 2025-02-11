@@ -6,7 +6,18 @@ export const JobDetails = {
     useAsTitle: 'job',
   },
   access: {
-    read: () => true,
+    read: ({ req: { user } }) => {
+      if (user) {
+        if (user?.role === 'org') {
+          return {
+            'job.organization.organization.id': {
+              equals: user.id,
+            },
+          }
+        }
+      }
+      return true
+    },
     create: OnlyAdmins,
     update: ({ req: { user } }) => {
       if (user) {
@@ -15,7 +26,7 @@ export const JobDetails = {
         }
         if (user?.role === 'org') {
           return {
-            'job.organization.organization': {
+            'job.organization.organization.id': {
               equals: user.id,
             },
           }
@@ -23,6 +34,21 @@ export const JobDetails = {
       }
       return false
     },
+    // delete: ({ req: { user } }) => {
+    //   if (user) {
+    //     if (user?.role === 'admin' || user?.role === 'super-admin') {
+    //       return true
+    //     }
+    //     if (user?.role === 'org') {
+    //       return {
+    //         'job.organization.organization.id': {
+    //           equals: user.id,
+    //         },
+    //       }
+    //     }
+    //   }
+    //   return false
+    // },
     delete: OnlyAdmins,
   },
   fields: [
@@ -30,7 +56,7 @@ export const JobDetails = {
       name: 'job',
       type: 'relationship',
       relationTo: 'jobs',
-      required: true,
+      // required: true,
       hasMany: false,
       access: { update: () => false },
     },

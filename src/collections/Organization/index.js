@@ -2,7 +2,7 @@ import OrganizationAndAdmin from '../../access/organizationAndAdmin'
 import { UrlPatternValidate } from '../../utils/urlPatternValidate'
 import { AutoUpload } from './hooks/autoUpload'
 import { OnlyAdmins } from '../../access/onlyAdmins'
-import { OrgRead } from '../../access/orgRead'
+// import { OrgRead } from '../../access/orgRead'
 
 export const Organization = {
   slug: 'organizations',
@@ -10,7 +10,18 @@ export const Organization = {
     useAsTitle: 'orgName',
   },
   access: {
-    read: OrgRead,
+    read: ({ req: { user } }) => {
+      if (user) {
+        if (user?.role === 'org') {
+          return {
+            'organization.id': {
+              equals: user.id,
+            },
+          }
+        }
+      }
+      return true
+    },
     create: OnlyAdmins,
     update: OrganizationAndAdmin,
     delete: OnlyAdmins,

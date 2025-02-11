@@ -1,4 +1,4 @@
-import OrganizationAndAdmin from '../../access/organizationAndAdmin'
+// import OrganizationAndAdmin from '../../access/organizationAndAdmin'
 import { JobDetailsCreateWithJob } from './hooks/jobDetailsCreateWithJob'
 import { UrlPatternValidate } from '../../utils/urlPatternValidate'
 
@@ -8,10 +8,63 @@ export const Job = {
     useAsTitle: 'organization',
   },
   access: {
-    read: () => true,
-    create: OrganizationAndAdmin,
-    update: OrganizationAndAdmin,
-    delete: OrganizationAndAdmin,
+    read: async ({ req: { user } }) => {
+      if (user) {
+        if (user?.role === 'org') {
+          return {
+            'organization.organization.id': {
+              equals: user.id,
+            },
+          }
+        }
+      }
+      return true
+    },
+    create: ({ req: { user } }) => {
+      if (user) {
+        if (user?.role === 'admin' || user?.role === 'super-admin') {
+          return true
+        }
+        if (user?.role === 'org') {
+          return {
+            'organization.organization.id': {
+              equals: user.id,
+            },
+          }
+        }
+      }
+      return false
+    },
+    update: ({ req: { user } }) => {
+      if (user) {
+        if (user?.role === 'admin' || user?.role === 'super-admin') {
+          return true
+        }
+        if (user?.role === 'org') {
+          return {
+            'organization.organization.id': {
+              equals: user.id,
+            },
+          }
+        }
+      }
+      return false
+    },
+    delete: ({ req: { user } }) => {
+      if (user) {
+        if (user?.role === 'admin' || user?.role === 'super-admin') {
+          return true
+        }
+        if (user?.role === 'org') {
+          return {
+            'organization.organization.id': {
+              equals: user.id,
+            },
+          }
+        }
+      }
+      return false
+    },
   },
   fields: [
     {
