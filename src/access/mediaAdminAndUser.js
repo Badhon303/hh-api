@@ -1,14 +1,14 @@
-export const MediaAdminAndUser = ({ req: { params, user } }) => {
+export const MediaAdminAndUser = ({ req: { routeParams, user } }) => {
   if (user?.role === 'admin' || user?.role === 'super-admin') {
     // Grant full access to all images for admins
     return true
   }
 
-  if (params && params.id) {
+  if (routeParams && routeParams.id) {
     // Grant public access for requests with a specific `id`
     return {
       id: {
-        equals: params.id,
+        equals: routeParams.id,
       },
     }
   }

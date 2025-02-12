@@ -1,27 +1,29 @@
-export const ApplicantRead = async ({ req: { params, user } }) => {
-  if (user?.role === 'admin' || user?.role === 'super-admin') {
+export const ApplicantRead = async ({ req }) => {
+  // console.log('req', Object.keys(req))
+  if (req.user?.role === 'admin' || req.user?.role === 'super-admin') {
     return true
   }
 
-  if (user?.role === 'org') {
-    if (params && params?.id) {
+  if (req.user?.role === 'org') {
+    console.log('routeParams', req.routeParams)
+    if (req.routeParams && req.routeParams?.id) {
       return {
         id: {
-          equals: params.id,
+          equals: req.routeParams.id,
         },
       }
     }
     // return {
     //   "job.organization.organization": {
-    //     equals: user.id,
+    //     equals: req.user.id,
     //   },
     // }
   }
 
-  if (user?.role === 'applicant') {
+  if (req.user?.role === 'applicant') {
     return {
       applicant: {
-        equals: user.id,
+        equals: req.user.id,
       },
     }
   }

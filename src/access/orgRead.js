@@ -1,13 +1,13 @@
-export const OrgRead = async ({ req: { params, user } }) => {
+export const OrgRead = async ({ req: { routeParams, user } }) => {
   if (user?.role === 'admin' || user?.role === 'super-admin') {
     return true
   }
 
-  if (user?.role === 'applicant' && params) {
-    if (params.id) {
+  if (user?.role === 'applicant' && routeParams) {
+    if (routeParams.id) {
       return {
         id: {
-          equals: params.id,
+          equals: routeParams.id,
         },
       }
     }
