@@ -58,20 +58,20 @@ export const ApplicantStatus = {
       required: true,
       options: [
         {
-          label: 'Pending',
-          value: 'pending',
+          label: 'Applied',
+          value: 'applied',
         },
         {
-          label: 'In Progress',
-          value: 'in-progress',
+          label: 'Shortlisted',
+          value: 'shortlisted',
         },
         {
-          label: 'Passed',
-          value: 'passed',
+          label: 'Hired',
+          value: 'hired',
         },
         {
-          label: 'Failed',
-          value: 'failed',
+          label: 'Rejected',
+          value: 'rejected',
         },
       ],
     },
