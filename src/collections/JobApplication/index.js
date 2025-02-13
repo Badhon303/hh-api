@@ -114,6 +114,7 @@ export const JobApplication = {
       type: 'join',
       collection: 'applicant-status',
       on: 'jobApplication',
+      maxDepth: 2,
     },
   ],
   hooks: {
