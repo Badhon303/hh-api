@@ -5,7 +5,6 @@ export const ApplicantRead = async ({ req }) => {
   }
 
   if (req.user?.role === 'org') {
-    console.log('routeParams', req.routeParams)
     if (req.routeParams && req.routeParams?.id) {
       return {
         id: {
