@@ -124,7 +124,6 @@ export const Applicant = {
     {
       name: 'bloodGroup',
       type: 'select',
-      access: { update: () => false },
       options: BloodGroup,
     },
     {
