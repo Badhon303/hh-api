@@ -1,4 +1,4 @@
-import OrganizationAndAdmin from '../../access/organizationAndAdmin'
+// import OrganizationAndAdmin from '../../access/organizationAndAdmin'
 
 export const HiringStage = {
   slug: 'hiring-stages',
@@ -7,9 +7,51 @@ export const HiringStage = {
   },
   access: {
     read: () => true,
-    create: OrganizationAndAdmin,
-    update: OrganizationAndAdmin,
-    delete: OrganizationAndAdmin,
+    create: ({ req: { user } }) => {
+      if (user) {
+        if (user?.role === 'admin' || user?.role === 'super-admin') {
+          return true
+        }
+        if (user?.role === 'org') {
+          return {
+            'organization.organization.id': {
+              equals: user.id,
+            },
+          }
+        }
+      }
+      return false
+    },
+    update: ({ req: { user } }) => {
+      if (user) {
+        if (user?.role === 'admin' || user?.role === 'super-admin') {
+          return true
+        }
+        if (user?.role === 'org') {
+          return {
+            'organization.organization.id': {
+              equals: user.id,
+            },
+          }
+        }
+      }
+      return false
+    },
+    delete: ({ req: { user } }) => {
+      if (user) {
+        if (user?.role === 'admin' || user?.role === 'super-admin') {
+          return true
+        }
+        if (user?.role === 'org') {
+          return {
+            'organization.organization.id': {
+              equals: user.id,
+            },
+          }
+        }
+      }
+      return false
+    },
   },
   fields: [
     {
