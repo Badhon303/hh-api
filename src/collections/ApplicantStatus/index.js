@@ -1,4 +1,4 @@
-import OrganizationAndAdmin from '../../access/organizationAndAdmin'
+// import OrganizationAndAdmin from '../../access/organizationAndAdmin'
 
 export const ApplicantStatus = {
   slug: 'applicant-status',
@@ -14,7 +14,7 @@ export const ApplicantStatus = {
         }
         if (user?.role === 'org') {
           return {
-            'jobApplication.jobDetails.job.organization': {
+            'jobApplication.jobDetails.job.organization.organization.id': {
               equals: user.id,
             },
           }
@@ -28,8 +28,9 @@ export const ApplicantStatus = {
           return true
         }
         if (user?.role === 'org') {
+          console.log('user', user.id)
           return {
-            'jobApplication.jobDetails.job.organization': {
+            'jobApplication.jobDetails.job.organization.organization.id': {
               equals: user.id,
             },
           }
@@ -37,7 +38,21 @@ export const ApplicantStatus = {
       }
       return false
     },
-    delete: OrganizationAndAdmin,
+    delete: ({ req: { user } }) => {
+      if (user) {
+        if (user?.role === 'admin' || user?.role === 'super-admin') {
+          return true
+        }
+        if (user?.role === 'org') {
+          return {
+            organization: {
+              equals: user.id,
+            },
+          }
+        }
+      }
+      return false
+    },
   },
   fields: [
     {
