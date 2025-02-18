@@ -4,11 +4,11 @@ export const MediaAdminAndUser = ({ req: { routeParams, user } }) => {
     return true
   }
 
-  if (routeParams && routeParams.id) {
+  if (routeParams && routeParams.filename) {
     // Grant public access for requests with a specific `id`
     return {
-      id: {
-        equals: routeParams.id,
+      filename: {
+        equals: routeParams.filename,
       },
     }
   }

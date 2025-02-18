@@ -23,9 +23,9 @@ export const ImageMedia = {
     //   // Deny access otherwise
     //   return false
     // },
-    read: () => true,
+    read: MediaAdminAndUser,
     update: () => false,
-    delete: () => MediaAdminAndUser,
+    delete: () => false,
   },
   upload: {
     staticURL: '/media/images',
