@@ -1,14 +1,14 @@
 import path from 'path'
 import { NameFormat } from '../../utils/nameFormat'
-import AdminsAndUsers from '../../access/adminsAndUsers'
+import { MediaAdminAndUser } from '../../access/mediaAdminAndUser'
 
 export const PdfMedia = {
   slug: 'media-pdfs',
   access: {
-    read: AdminsAndUsers,
-    update: AdminsAndUsers,
-    create: AdminsAndUsers,
-    delete: AdminsAndUsers,
+    read: MediaAdminAndUser,
+    update: MediaAdminAndUser,
+    create: MediaAdminAndUser,
+    delete: MediaAdminAndUser,
   },
   upload: {
     staticURL: '/media/pdf',
