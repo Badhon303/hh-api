@@ -111,7 +111,9 @@ export const Job = {
           const existingOrg = await req.payload.find({
             collection: 'organizations',
             where: {
-              organization: req.user.id,
+              'organization.id': {
+                equals: req.user.id,
+              },
             },
           })
           data.organization = existingOrg.docs[0].id

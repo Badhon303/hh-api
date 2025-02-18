@@ -1,0 +1,223 @@
+  ' =============================
+    '          FINANCE
+    ' =============================
+    class Account {
+        +accountID: int
+        +accountName: String
+        +balance: double
+        +addTransaction(t: Transaction)
+        +getBalance(): double
+    }
+    class Transaction {
+        +transactionID: int
+        +transactionDate: Date
+        +amount: double
+        +type: String
+    }
+    class Invoice {
+        +invoiceID: int
+        +invoiceDate: Date
+        +totalAmount: double
+    }
+    class Payment {
+        +paymentID: int
+        +paymentDate: Date
+        +amount: double
+    }
+
+    Account "1" <.. "0..*" Transaction : "posted to"
+    Invoice --|> Transaction : "could be specialized form"
+    Payment --|> Transaction : "could be specialized form"
+
+
+    ' =============================
+    '         HR & PAYROLL
+    ' =============================
+    class Employee {
+        +employeeID: int
+        +name: String
+        +department: String
+        +position: String
+    }
+    class Payroll {
+        +payrollID: int
+        +periodStart: Date
+        +periodEnd: Date
+        +generatePaychecks()
+    }
+    class TimeSheet {
+        +timeSheetID: int
+        +date: Date
+        +hoursWorked: double
+    }
+
+    Employee "1" -- "0..*" TimeSheet : "logs"
+    Payroll "1" -- "0..*" Employee : "processes"
+
+
+    ' =============================
+    '        PROCUREMENT
+    ' =============================
+    class Supplier {
+        +supplierID: int
+        +name: String
+        +contactInfo: String
+    }
+    class PurchaseOrder {
+        +poID: int
+        +dateIssued: Date
+        +status: String
+    }
+
+    PurchaseOrder "1" -- "1" Supplier : "issuedTo"
+
+
+    ' =============================
+    '        INVENTORY
+    ' =============================
+    class InventoryItem {
+        +itemID: int
+        +itemName: String
+        +quantityOnHand: int
+        +reorderLevel: int
+    }
+    class Warehouse {
+        +warehouseID: int
+        +location: String
+        +capacity: int
+    }
+
+    InventoryItem "0..*" -- "1" Warehouse : "storedIn"
+
+
+    ' =============================
+    '          SALES
+    ' =============================
+    class Customer {
+        +customerID: int
+        +name: String
+        +contactInfo: String
+    }
+    class SalesOrder {
+        +soID: int
+        +dateCreated: Date
+        +status: String
+    }
+
+    SalesOrder "1" -- "1" Customer : "belongsTo"
+    Invoice "1" -- "1" SalesOrder : "references"
+    Invoice "1" -- "1" Customer : "billedTo"
+
+
+    ' =============================
+    '           CRM
+    ' =============================
+    class Lead {
+        +leadID: int
+        +name: String
+        +status: String
+    }
+    class Opportunity {
+        +oppID: int
+        +value: double
+        +closingDate: Date
+    }
+    class Case {
+        +caseID: int
+        +description: String
+        +status: String
+    }
+
+    Opportunity "1" -- "1" Customer : "assignedTo"
+
+
+    ' =============================
+    '      MANUFACTURING
+    ' =============================
+    class ProductionOrder {
+        +prodOrderID: int
+        +scheduledStart: Date
+        +scheduledEnd: Date
+    }
+    class BillOfMaterials {
+        +bomID: int
+        +components: List~String~
+    }
+
+    ProductionOrder "1" -- "1..*" BillOfMaterials : "uses"
+
+
+    ' =============================
+    '    PROJECT MANAGEMENT
+    ' =============================
+    class Project {
+        +projectID: int
+        +name: String
+        +startDate: Date
+        +endDate: Date
+    }
+    class Task {
+        +taskID: int
+        +description: String
+        +status: String
+    }
+    class ResourceAllocation {
+        +allocationID: int
+        +allocatedHours: double
+    }
+
+    Project "1" -- "0..*" Task : "contains"
+    ResourceAllocation "1" -- "1" Employee : "assignedEmployee"
+    ResourceAllocation "1" -- "1" Task : "assignedToTask"
+
+
+    ' =============================
+    '   ASSET MANAGEMENT
+    ' =============================
+    class Asset {
+        +assetID: int
+        +assetName: String
+        +acquisitionDate: Date
+    }
+    class MaintenanceSchedule {
+        +scheduleID: int
+        +maintenanceDate: Date
+        +notes: String
+    }
+
+    Asset "1" -- "0..*" MaintenanceSchedule : "has"
+
+
+    ' =============================
+    '  BUSINESS INTELLIGENCE
+    ' =============================
+    class Report {
+        +reportID: int
+        +title: String
+        +generateReport()
+    }
+    class Dashboard {
+        +dashboardID: int
+        +title: String
+    }
+
+    ' =============================
+    '  COMPLIANCE & RISK
+    ' =============================
+    class Regulation {
+        +regulationID: int
+        +title: String
+        +description: String
+    }
+    class Risk {
+        +riskID: int
+        +description: String
+        +impact: String
+    }
+    class AuditRecord {
+        +auditID: int
+        +recordDate: Date
+        +details: String
+    }
+
+    AuditRecord "1" -- "1..*" Regulation : "relatedTo"
