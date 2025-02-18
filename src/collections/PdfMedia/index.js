@@ -7,8 +7,7 @@ export const PdfMedia = {
   access: {
     read: MediaAdminAndUser,
     update: MediaAdminAndUser,
-    create: MediaAdminAndUser,
-    delete: MediaAdminAndUser,
+    delete: () => false,
   },
   upload: {
     staticURL: '/media/pdf',
