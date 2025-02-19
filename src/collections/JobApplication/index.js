@@ -121,14 +121,17 @@ export const JobApplication = {
     beforeChange: [DuplicateApplication],
     afterRead: [
       async ({ req, doc }) => {
-        try {
-          const applicant = await req.payload.findByID({
-            collection: 'applicants',
-            id: doc.applicant,
-          })
-          doc.applicant = applicant
-        } catch (error) {
-          console.error('Error during application check:', error.message || error)
+        // if user is not admin or super-admin, return
+        if (!['admin', 'super-admin'].includes(req.user?.role)) {
+          try {
+            const applicant = await req.payload.findByID({
+              collection: 'applicants',
+              id: doc.applicant,
+            })
+            doc.applicant = applicant
+          } catch (error) {
+            console.error('Error during application check:', error.message || error)
+          }
         }
       },
     ],
