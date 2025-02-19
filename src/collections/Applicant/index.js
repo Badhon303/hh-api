@@ -298,4 +298,31 @@ export const Applicant = {
       ],
     },
   ],
+  hooks: {
+    afterRead: [
+      async ({ req, doc }) => {
+        // if user is not admin or super-admin, return
+        if (!['admin', 'super-admin'].includes(req.user?.role)) {
+          try {
+            if (doc.cv !== null) {
+              const cv = await req.payload.findByID({
+                collection: 'media-pdfs',
+                id: doc.cv,
+              })
+              doc.cv = cv
+            }
+            if (doc.img !== null) {
+              const img = await req.payload.findByID({
+                collection: 'media-images',
+                id: doc.img,
+              })
+              doc.img = img
+            }
+          } catch (error) {
+            console.error('Error during application check:', error.message || error)
+          }
+        }
+      },
+    ],
+  },
 }
