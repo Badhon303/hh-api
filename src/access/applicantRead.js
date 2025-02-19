@@ -1,5 +1,4 @@
 export const ApplicantRead = async ({ req }) => {
-  // console.log('req', Object.keys(req))
   if (req.user?.role === 'admin' || req.user?.role === 'super-admin') {
     return true
   }
@@ -12,11 +11,6 @@ export const ApplicantRead = async ({ req }) => {
         },
       }
     }
-    // return {
-    //   "job.organization.organization": {
-    //     equals: req.user.id,
-    //   },
-    // }
   }
 
   if (req.user?.role === 'applicant') {
@@ -27,6 +21,5 @@ export const ApplicantRead = async ({ req }) => {
     }
   }
 
-  // Deny access otherwise
   return false
 }

@@ -74,7 +74,7 @@ export const JobApplication = {
       name: 'applicant',
       type: 'relationship',
       relationTo: 'applicants',
-      // required: true,
+      maxDepth: 2,
       access: { update: () => false, create: () => false },
       defaultValue: async ({ user, req }) => {
         if (user) {
@@ -119,5 +119,18 @@ export const JobApplication = {
   ],
   hooks: {
     beforeChange: [DuplicateApplication],
+    afterRead: [
+      async ({ req, doc }) => {
+        try {
+          const applicant = await req.payload.findByID({
+            collection: 'applicants',
+            id: doc.applicant,
+          })
+          doc.applicant = applicant
+        } catch (error) {
+          console.error('Error during application check:', error.message || error)
+        }
+      },
+    ],
   },
 }
