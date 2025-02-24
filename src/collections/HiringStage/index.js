@@ -64,14 +64,13 @@ export const HiringStage = {
     {
       name: 'title',
       type: 'text',
-      unique: true,
+      // unique: true,
       required: true,
       maxLength: 50,
     },
     {
       name: 'order',
       type: 'number',
-      unique: true,
       required: true,
       max: 10,
       min: 1,
